@@ -6,11 +6,11 @@ import {
   MetaReducer
 } from '@ngrx/store';
 import { environment } from '../../environments/environment';
-import * as fromLaunch from './launch.reducer';
+import * as fromLaunch from './launch/launch.reducer';
 
 export interface State {
 
-  launch: fromLaunch.State;
+  launch: fromLaunch.LaunchesState;
 }
 
 export const reducers: ActionReducerMap<State> = {

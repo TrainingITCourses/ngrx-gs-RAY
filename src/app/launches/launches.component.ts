@@ -1,6 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { GlobalStore, GlobalSlideTypes } from './../store/global-store.state';
-import { Observable } from 'rxjs';
+import { Observable, of, from } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { LaunchesState } from './../reducers/launch/launch.reducer';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-launches',
@@ -10,12 +12,15 @@ import { Observable } from 'rxjs';
 })
 export class LaunchesComponent implements OnInit {
 
-  constructor(private globalStore: GlobalStore) { }
+  constructor(private store: Store<LaunchesState>) { }
 
-  private launches$: Observable<any>;
+  private launches$;
 
   ngOnInit() {
-    this.launches$ = this.globalStore.select$( GlobalSlideTypes.launchesFilter );
+    this.launches$ = this.store.select('launch');
+      // .pipe(
+      //   map(launchesState => launchesState.launches)
+      // );
   }
 
 }

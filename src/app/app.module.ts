@@ -13,7 +13,7 @@ import { reducers, metaReducers } from './reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
-import { LaunchEffects } from './reducers/launch.effects';
+import { LaunchEffects } from './reducers/launch/launch.effects';
 
 @NgModule({
   declarations: [

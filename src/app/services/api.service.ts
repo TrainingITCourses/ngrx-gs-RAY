@@ -3,13 +3,17 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, forkJoin } from 'rxjs';
 import { GlobalStore } from '../store/global-store.state';
 import { LoadAgencies, LoadTypesStatus, LoadTypesMissions, LoadLaunches } from '../store/global-store.actions';
+import { State } from './../reducers/index';
+import { Store } from '@ngrx/store';
+import { LaunchesLoaded } from '../reducers/launch/launch.actions';
 
 @Injectable({providedIn: 'root'})
 export class ApiService {
 
   constructor(
     private httpClient: HttpClient,
-    private globalStore: GlobalStore) { }
+    private globalStore: GlobalStore,
+    private store: Store<State>) { }
 
   public getData = () => {
     forkJoin(
@@ -42,7 +46,7 @@ export class ApiService {
 
       // https://programandoointentandolo.com/2017/07/estructuras-condicionales-java.html
       // Operador terniario
-      this.globalStore.dispatch(new LoadLaunches(
+      this.store.dispatch(new LaunchesLoaded(
         res[3].launches.map(launch => ({
           id: launch.id,
           name: launch.name,
@@ -51,6 +55,15 @@ export class ApiService {
           typeMission: launch.missions.length > 0 ? launch.missions[0].type : 0,
         }))
       ));
+      // this.globalStore.dispatch(new LoadLaunches(
+      //   res[3].launches.map(launch => ({
+      //     id: launch.id,
+      //     name: launch.name,
+      //     agencie: launch.rocket.agencies ? launch.rocket.agencies.length > 0 ? launch.rocket.agencies[0].id : 0: 0,
+      //     status: launch.status,
+      //     typeMission: launch.missions.length > 0 ? launch.missions[0].type : 0,
+      //   }))
+      // ));
     })
   }
   
