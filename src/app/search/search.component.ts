@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { ApiService } from './../services/api.service';
 import { GlobalStore, GlobalSlideTypes } from './../store/global-store.state';
 import { eCriteria } from './../shared/search-criteria/search-criteria-enum';
 import { SetLaunchesFilter } from './../store/global-store.actions';
 import { Launch } from '../store/models/global.model';
+import { State } from '../reducers';
+import { LoadLaunches } from './../reducers/launch/launch.actions';
 
 @Component({
   selector: 'app-search',
@@ -13,15 +16,21 @@ import { Launch } from '../store/models/global.model';
 export class SearchComponent implements OnInit {
 
   constructor(private api : ApiService, 
-              private globalStore : GlobalStore) { }
+              private globalStore : GlobalStore,
+              private store: Store<State>) { }
 
   private _numLaunches: number;
 
   ngOnInit() {
+    this.loadData();
     this.api.getData();
 
     this.globalStore.select$( GlobalSlideTypes.idValue )
       .subscribe( idValue => this.onChangeValue(idValue) );
+  }
+
+  private loadData = () => {
+    this.store.dispatch(new LoadLaunches());
   }
  
   onChangeValue = (idValue: number) => {

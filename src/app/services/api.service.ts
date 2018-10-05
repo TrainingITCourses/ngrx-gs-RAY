@@ -6,6 +6,7 @@ import { LoadAgencies, LoadTypesStatus, LoadTypesMissions, LoadLaunches } from '
 import { State } from './../reducers/index';
 import { Store } from '@ngrx/store';
 import { LaunchesLoaded } from '../reducers/launch/launch.actions';
+import { map } from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
 export class ApiService {
@@ -46,7 +47,7 @@ export class ApiService {
 
       // https://programandoointentandolo.com/2017/07/estructuras-condicionales-java.html
       // Operador terniario
-      this.store.dispatch(new LaunchesLoaded(
+      this.globalStore.dispatch(new LoadLaunches(
         res[3].launches.map(launch => ({
           id: launch.id,
           name: launch.name,
@@ -55,15 +56,6 @@ export class ApiService {
           typeMission: launch.missions.length > 0 ? launch.missions[0].type : 0,
         }))
       ));
-      // this.globalStore.dispatch(new LoadLaunches(
-      //   res[3].launches.map(launch => ({
-      //     id: launch.id,
-      //     name: launch.name,
-      //     agencie: launch.rocket.agencies ? launch.rocket.agencies.length > 0 ? launch.rocket.agencies[0].id : 0: 0,
-      //     status: launch.status,
-      //     typeMission: launch.missions.length > 0 ? launch.missions[0].type : 0,
-      //   }))
-      // ));
     })
   }
   
@@ -78,5 +70,17 @@ export class ApiService {
 
   private getLaunches = () : Observable<any> => 
     this.httpClient.get('../../assets/launchlibrary.json');
+
+  public getLaunches$ = () : Observable<any> => {
+    return this.httpClient.get('../../assets/launchlibrary.json').pipe(
+      map((res:any) => res.launches.map(launch => ({
+        id: launch.id,
+        name: launch.name,
+        agencie: launch.rocket.agencies ? launch.rocket.agencies.length > 0 ? launch.rocket.agencies[0].id : 0: 0,
+        status: launch.status,
+        typeMission: launch.missions.length > 0 ? launch.missions[0].type : 0,
+      }))
+    ));
+  }
 
 }

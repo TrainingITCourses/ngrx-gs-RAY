@@ -14,6 +14,9 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { LaunchEffects } from './reducers/launch/launch.effects';
+import { AgencieEffects } from './reducers/agencie/agencie.effects';
+import { TypeMissionEffects } from './reducers/type-mission.effects';
+import { TypeStatusEffects } from './reducers/type-status.effects';
 
 @NgModule({
   declarations: [
@@ -29,7 +32,7 @@ import { LaunchEffects } from './reducers/launch/launch.effects';
     HttpClientModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
-    EffectsModule.forRoot([LaunchEffects])
+    EffectsModule.forRoot([LaunchEffects, AgencieEffects, TypeMissionEffects, TypeStatusEffects])
   ],
   providers: [],
   bootstrap: [AppComponent]

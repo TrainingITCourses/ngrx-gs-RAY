@@ -1,4 +1,3 @@
 <div app-container>
-  <p>Numero de lanzamientos: {{ (launches$ | async).launches.length | number }} </p>
-  <div app-cols *ngFor="let a of (launches$ | async).launches">{{ a.name }}</div>
+  <div app-cols *ngFor="let a of (launches$ | async).launchesFiltered">{{ a.name }}</div>
 </div>

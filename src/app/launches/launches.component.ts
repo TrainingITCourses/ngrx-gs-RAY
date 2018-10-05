@@ -18,9 +18,6 @@ export class LaunchesComponent implements OnInit {
 
   ngOnInit() {
     this.launches$ = this.store.select('launch');
-      // .pipe(
-      //   map(launchesState => launchesState.launches)
-      // );
   }
 
 }

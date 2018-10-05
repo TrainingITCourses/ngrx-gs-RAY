@@ -2,12 +2,12 @@ import { LaunchActions, LaunchActionTypes } from './launch.actions';
 
 export interface LaunchesState {
   launches: any[];
-  paco: number;
+  launchesFiltered: any[];
 }
 
 export const initialState: LaunchesState = {
   launches: [],
-  paco: 0
+  launchesFiltered: []
 };
 
 export function reducer(state = initialState, action: LaunchActions): LaunchesState {
@@ -15,7 +15,7 @@ export function reducer(state = initialState, action: LaunchActions): LaunchesSt
     case LaunchActionTypes.LoadLaunches:
       return { ...state };
     case LaunchActionTypes.LaunchesLoaded:
-      return { ...initialState, launches: action.payload, paco: action.payload.length};
+      return { ...initialState, launches: action.payload};
     default:
       return state;
   }
