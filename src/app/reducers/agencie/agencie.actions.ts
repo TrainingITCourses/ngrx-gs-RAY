@@ -1,11 +1,17 @@
 import { Action } from '@ngrx/store';
 
 export enum AgencieActionTypes {
-  LoadAgencies = '[Agencie] Load Agencies'
+  LoadAgencies = '[Agencie] Load Agencies',
+  AgenciesLoaded = '[Agencie] Agencies Loaded'
 }
 
 export class LoadAgencies implements Action {
   readonly type = AgencieActionTypes.LoadAgencies;
 }
 
-export type AgencieActions = LoadAgencies;
+export class AgenciesLoaded implements Action {
+  readonly type = AgencieActionTypes.AgenciesLoaded;
+  constructor (public readonly payload?: any) {}
+}
+
+export type AgencieActions = LoadAgencies | AgenciesLoaded;

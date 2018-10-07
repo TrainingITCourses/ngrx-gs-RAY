@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { ApiService } from './../services/api.service';
-import { GlobalStore, GlobalSlideTypes } from './../store/global-store.state';
 import { eCriteria } from './../shared/search-criteria/search-criteria-enum';
-import { SetLaunchesFilter } from './../store/global-store.actions';
-import { Launch } from '../store/models/global.model';
 import { State } from '../reducers';
-import { LoadLaunches } from './../reducers/launch/launch.actions';
+import { LoadLaunches, LaunchesFiltered } from './../reducers/launch/launch.actions';
+import { LoadTypeMissions } from '../reducers/type-mission/type-mission.actions';
+import { LoadTypeStatus } from '../reducers/type-status/type-status.actions';
+import { LoadAgencies } from '../reducers/agencie/agencie.actions';
+import { CriteriaState } from '../reducers/criteria/criteria.reducer';
+import { LaunchesState } from '../reducers/launch/launch.reducer';
+import { Launch } from '../reducers/models';
 
 @Component({
   selector: 'app-search',
@@ -15,48 +17,48 @@ import { LoadLaunches } from './../reducers/launch/launch.actions';
 })
 export class SearchComponent implements OnInit {
 
-  constructor(private api : ApiService, 
-              private globalStore : GlobalStore,
-              private store: Store<State>) { }
-
-  private _numLaunches: number;
+  constructor(private store: Store<State>,
+              private criteriaStore: Store<CriteriaState>,
+              private launchesStore: Store<LaunchesState>) {}
 
   ngOnInit() {
     this.loadData();
-    this.api.getData();
-
-    this.globalStore.select$( GlobalSlideTypes.idValue )
-      .subscribe( idValue => this.onChangeValue(idValue) );
+  
+    this.criteriaStore.select( 'criteria' )
+      .subscribe( state => this.onChangeValue(state) );
   }
 
   private loadData = () => {
     this.store.dispatch(new LoadLaunches());
+    this.store.dispatch(new LoadTypeMissions());
+    this.store.dispatch(new LoadTypeStatus());
+    this.store.dispatch(new LoadAgencies());
   }
  
-  onChangeValue = (idValue: number) => {
-    console.log('onChangeValue: ' + idValue + ' con criterio ' + <eCriteria>this.globalStore.getSnapshot( GlobalSlideTypes.criteria ));
+  onChangeValue = (state: any) => {
 
-    this.globalStore.select$( GlobalSlideTypes.launches )
-      .subscribe((launches: Launch[]) => {
-        const launchesFilter: Launch[] = launches.filter((launch: any) => 
+    console.log('Change criteria: ' + state.criteria + ' - value: ' + state.value);
+    
+    this.launchesStore.select( 'launch' )
+      .subscribe((stateLaunch: any) => {
+        const launchesFilter: Launch[] = stateLaunch.launches.filter((launch: Launch) => 
           {
             let valido = false;
-            switch (<eCriteria>this.globalStore.getSnapshot( GlobalSlideTypes.criteria )) {
+            switch (state.criteria) {
               case eCriteria.Agencia:
-                valido = launch.agencie == idValue;
+                valido = launch.agencie == state.value;
                 break;
               case eCriteria.Estado:
-                valido = launch.status == idValue;
+                valido = launch.status == state.value;
                 break;
               case eCriteria.Tipo:
-                valido = launch.typeMission == idValue;
+                valido = launch.typeMission == state.value;
                 break;
             }
             return valido;
           }
         );
-        this.globalStore.dispatch(new SetLaunchesFilter( launchesFilter ));
-        this._numLaunches = <number>this.globalStore.getSnapshot ( GlobalSlideTypes.numLaunches );
+        // this.launchesStore.dispatch( new LaunchesFiltered( launchesFilter ));
       })
   }
 

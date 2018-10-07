@@ -1,17 +1,20 @@
-import { Action } from '@ngrx/store';
+import { AgencieActions, AgencieActionTypes } from './agencie.actions';
 
 
-export interface State {
-
+export interface AgencieState {
+  agencies: any[];
 }
 
-export const initialState: State = {
-
+export const initialState: AgencieState = {
+  agencies: []
 };
 
-export function reducer(state = initialState, action: Action): State {
+export function reducer(state = initialState, action: AgencieActions): AgencieState {
   switch (action.type) {
-
+    case AgencieActionTypes.LoadAgencies:
+      return {...state};
+    case AgencieActionTypes.AgenciesLoaded:
+      return { ...initialState, agencies: action.payload };
     default:
       return state;
   }

@@ -15,7 +15,9 @@ export function reducer(state = initialState, action: LaunchActions): LaunchesSt
     case LaunchActionTypes.LoadLaunches:
       return { ...state };
     case LaunchActionTypes.LaunchesLoaded:
-      return { ...initialState, launches: action.payload};
+      return { ...state, launches: action.payload};
+    case LaunchActionTypes.LaunchesFiltered:
+      return { ...state, launchesFiltered: action.payload};
     default:
       return state;
   }

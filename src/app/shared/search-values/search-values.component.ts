@@ -1,9 +1,13 @@
-import { GlobalSlideTypes, GlobalStore } from './../../store/global-store.state';
 import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { ChangeidValue } from '../../store/global-store.actions';
 import { eCriteria } from './../search-criteria/search-criteria-enum';
+import { Store, State } from '@ngrx/store';
+import { AgencieState } from '../../reducers/agencie/agencie.reducer';
+import { TypeMissionState } from '../../reducers/type-mission/type-mission.reducer';
+import { TypeStatusState } from '../../reducers/type-status/type-status.reducer';
+import { ChangeValues } from '../../reducers/criteria/criteria.actions';
+import { CriteriaState } from '../../reducers/criteria/criteria.reducer';
 
 @Component({
   selector: 'app-search-values',
@@ -14,26 +18,34 @@ import { eCriteria } from './../search-criteria/search-criteria-enum';
 export class SearchValuesComponent implements OnInit {
 
   public values$: Observable<any>;
+  private criteria: eCriteria;
 
-  constructor(private globalStore: GlobalStore) { }
+  constructor(private agencieStore: Store<AgencieState>,
+              private typeMissionStore: Store<TypeMissionState>,
+              private typeStatusStore: Store<TypeStatusState>,
+              private criteriaStore: Store<CriteriaState> ) { }
 
   ngOnInit() {
-    this.values$ = this.globalStore.select$(GlobalSlideTypes.criteria)
-    .pipe(switchMap((criteria: eCriteria) => {
-      console.log('Criterio: ' + criteria);
-      switch (criteria) {
-        case eCriteria.Agencia:
-          return this.globalStore.select$(GlobalSlideTypes.agencies);
-        case eCriteria.Estado:
-          return this.globalStore.select$(GlobalSlideTypes.typesStatus);
-        case eCriteria.Tipo:
-          return this.globalStore.select$(GlobalSlideTypes.typesMissions);
-      }
-    }));
-  }
+    this.values$ = this.criteriaStore.select('criteria')
+      .pipe(switchMap((state: CriteriaState) => {
+        if (this.criteria != state.criteria) {
+          switch (state.criteria) {
+            case eCriteria.Agencia:
+              return this.agencieStore.select('agencie')
+                .pipe(map(agenciesState => agenciesState.agencies));
+            case eCriteria.Estado:
+              return this.typeStatusStore.select('typeStatus')
+                .pipe(map(typeStatusState => typeStatusState.typesStatus));
+            case eCriteria.Tipo:
+              return this.typeMissionStore.select('typeMission')
+                .pipe(map(typeMissionsState => typeMissionsState.typesMissions ));
+          }
+        }
+      }));
+  } 
 
   onChange = (event) => {
-    this.globalStore.dispatch(new ChangeidValue( +event.srcElement.value ));
+    this.criteriaStore.dispatch(new ChangeValues( +event.srcElement.value ));
   }
 
 }

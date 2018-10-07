@@ -15,8 +15,8 @@ import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { LaunchEffects } from './reducers/launch/launch.effects';
 import { AgencieEffects } from './reducers/agencie/agencie.effects';
-import { TypeMissionEffects } from './reducers/type-mission.effects';
-import { TypeStatusEffects } from './reducers/type-status.effects';
+import { TypeMissionEffects } from './reducers/type-mission/type-mission.effects';
+import { TypeStatusEffects } from './reducers/type-status/type-status.effects';
 
 @NgModule({
   declarations: [

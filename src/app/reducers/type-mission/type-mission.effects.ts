@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { ApiService } from '../../services/api.service';
+import { TypeMissionActionTypes, TypeMissionsLoaded } from './type-mission.actions';
 import { mergeMap, map } from 'rxjs/operators';
-import { AgenciesLoaded, AgencieActionTypes } from './agencie.actions';
 
 
 @Injectable()
-export class AgencieEffects {
+export class TypeMissionEffects {
 
   @Effect()
   public load$ = this.actions$
-    .ofType(AgencieActionTypes.LoadAgencies)
+    .ofType(TypeMissionActionTypes.LoadTypeMissions)
     .pipe(
-      mergeMap(() => 
+      mergeMap(() =>
         this.api
-          .getAgencies$()
-          .pipe(map(agencies => new AgenciesLoaded(agencies)))
+          .getTypesMissions$()
+          .pipe(map(typesMissions => new TypeMissionsLoaded(typesMissions)))
       )
     );
 

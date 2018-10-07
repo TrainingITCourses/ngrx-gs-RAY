@@ -1,8 +1,11 @@
 import { Action } from '@ngrx/store';
+import { Launch, ICriteria } from '../models';
 
 export enum LaunchActionTypes {
   LoadLaunches = '[Launch] Load Launches',
-  LaunchesLoaded = '[Launch] Launches loaded'
+  LaunchesLoaded = '[Launch] Launches loaded',
+  LaunchesFiltered = '[Launch] Launches filtered',
+  FilterLaunches = '[Launch] Filter launches'
 }
 
 export class LoadLaunches implements Action {
@@ -11,7 +14,17 @@ export class LoadLaunches implements Action {
 
 export class LaunchesLoaded implements Action {
   readonly type = LaunchActionTypes.LaunchesLoaded;
-  constructor (public readonly payload?: any) {}
+  constructor (public readonly payload?: Launch[]) {}
 }
 
-export type LaunchActions = LoadLaunches | LaunchesLoaded;
+export class LaunchesFiltered implements Action {
+  readonly type = LaunchActionTypes.LaunchesFiltered;
+  constructor (public readonly payload?: Launch[]) {}
+}
+
+export class FilterLaunches implements Action {
+  readonly type = LaunchActionTypes.FilterLaunches;
+  constructor (public readonly payload?: ICriteria) {}
+}
+
+export type LaunchActions = LoadLaunches | LaunchesLoaded | LaunchesFiltered | FilterLaunches;

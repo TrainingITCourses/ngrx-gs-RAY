@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { GlobalStore } from './../../store/global-store.state';
-import { ChangeCriteria } from './../../store/global-store.actions';
+import { Store } from '@ngrx/store';
+import { CriteriaState } from '../../reducers/criteria/criteria.reducer';
+import { ChangeCriteria } from '../../reducers/criteria/criteria.actions';
 
 @Component({
   selector: 'app-search-criteria',
@@ -10,13 +11,13 @@ import { ChangeCriteria } from './../../store/global-store.actions';
 })
 export class SearchCriteriaComponent implements OnInit {
   
-  constructor(private globalStore: GlobalStore) { }
+  constructor(private store: Store<CriteriaState>) { }
  
   ngOnInit() {
   }
 
   onChange = (event) => {
-    this.globalStore.dispatch(new ChangeCriteria( +event.srcElement.value ));
+    this.store.dispatch(new ChangeCriteria( +event.srcElement.value ));
   }
 
 }
