@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { eCriteria } from './../search-criteria/search-criteria-enum';
-import { Store, State } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { AgencieState } from '../../reducers/agencie/agencie.reducer';
 import { TypeMissionState } from '../../reducers/type-mission/type-mission.reducer';
 import { TypeStatusState } from '../../reducers/type-status/type-status.reducer';

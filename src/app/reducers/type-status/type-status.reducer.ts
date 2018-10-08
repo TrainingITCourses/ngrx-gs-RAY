@@ -1,8 +1,9 @@
+import { TypeStatus } from './../models';
 import { TypeStatusActions, TypeStatusActionTypes } from './type-status.actions';
 
 
 export interface TypeStatusState {
-  typesStatus: any[]
+  typesStatus: TypeStatus[]
 }
 
 export const initialState: TypeStatusState = {

@@ -1,7 +1,9 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { Launch } from './../reducers/models';
 import { LaunchesState } from './../reducers/launch/launch.reducer';
 import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-launches',
@@ -13,7 +15,7 @@ export class LaunchesComponent implements OnInit {
 
   constructor(private storeLaunches: Store<LaunchesState>) { }
 
-  private launches$;
+  private launches$: Observable<Launch[]>;
 
   ngOnInit() {
     this.launches$ = this.storeLaunches.select('launch')

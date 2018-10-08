@@ -7,7 +7,7 @@ export interface CriteriaState {
 }
 
 export const initialState: CriteriaState = {
-  criteria: eCriteria.Agencia,
+  criteria: eCriteria.Estado,
   value: 0
 };
 

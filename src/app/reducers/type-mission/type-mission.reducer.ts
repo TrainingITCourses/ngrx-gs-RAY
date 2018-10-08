@@ -1,8 +1,9 @@
+import { TypeMission } from './../models';
 import { TypeMissionActions, TypeMissionActionTypes } from './type-mission.actions';
 
 
 export interface TypeMissionState {
-  typesMissions: any[]
+  typesMissions: TypeMission[]
 }
 
 export const initialState: TypeMissionState = {

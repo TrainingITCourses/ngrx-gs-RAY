@@ -1,8 +1,9 @@
+import { Launch } from './../models';
 import { LaunchActions, LaunchActionTypes } from './launch.actions';
 
 export interface LaunchesState {
-  launches: any[];
-  launchesFiltered: any[];
+  launches: Launch[];
+  launchesFiltered: Launch[];
 }
 
 export const initialState: LaunchesState = {
@@ -16,6 +17,8 @@ export function reducer(state = initialState, action: LaunchActions): LaunchesSt
       return { ...state };
     case LaunchActionTypes.LaunchesLoaded:
       return { ...state, launches: action.payload};
+    case LaunchActionTypes.FilterLaunches:
+      return { ...state };
     case LaunchActionTypes.LaunchesFiltered:
       return { ...state, launchesFiltered: action.payload};
     default:

@@ -1,8 +1,9 @@
+import { Agencie } from './../models';
 import { AgencieActions, AgencieActionTypes } from './agencie.actions';
 
 
 export interface AgencieState {
-  agencies: any[];
+  agencies: Agencie[];
 }
 
 export const initialState: AgencieState = {

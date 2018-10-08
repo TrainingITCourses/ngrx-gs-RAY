@@ -1,4 +1,6 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { LaunchesState } from './../../reducers/launch/launch.reducer';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-results-counter',
@@ -8,12 +10,12 @@ import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core
 })
 export class ResultsCounterComponent implements OnInit {
 
-  @Input() public countLaunches: number;
+  constructor(private storeLaunches: Store<LaunchesState>) { }
 
-  constructor() { }
+  private launches$;
 
   ngOnInit() {
-    console.log('lanzamientos: ' + this.countLaunches);
+    this.launches$ = this.storeLaunches.select('launch')
   }
 
 }
